@@ -1,51 +1,50 @@
 #include <algorithm>
+#include <array>
 #include <cstdlib>
 #include <fstream>
-#include <utility>
 
 using std::abs;
+using std::array;
 using std::ifstream;
 using std::max;
 using std::min;
 using std::ofstream;
-using std::pair;
 
 auto fin = ifstream("buckets.in");
 auto fout = ofstream("buckets.out");
 
 auto solve() {
 
-    auto barn = pair<int, int>();
-    auto lake = pair<int, int>();
-    auto rock = pair<int, int>();
+    auto barn = array<int, 2>();
+    auto lake = array<int, 2>();
+    auto rock = array<int, 2>();
 
     for (auto i = 0; i < 10; ++i) {
         for (auto j = 0; j < 10; ++j) {
             auto square = '\0';
             fin >> square;
             if (square == 'B') {
-                barn.first = j;
-                barn.second = i;
+                barn[0] = j;
+                barn[1] = i;
             } else if (square == 'L') {
-                lake.first = j;
-                lake.second = i;
+                lake[0] = j;
+                lake[1] = i;
             } else if (square == 'R') {
-                rock.first = j;
-                rock.second = i;
+                rock[0] = j;
+                rock[1] = i;
             }
         }
     }
 
-    auto cows = abs(barn.first - lake.first) + abs(barn.second - lake.second) - 1;
+    auto cows = abs(lake[0] - barn[0]) + abs(lake[1] - barn[1]) - 1;
 
     if (
         (
-            barn.first == lake.first && barn.first == rock.first &&
-            rock.second > min(barn.second, lake.second) &&
-            rock.second < max(barn.second, lake.second)
+            barn[0] == lake[0] && barn[0] == rock[0] && rock[1] > min(barn[1], lake[1]) &&
+            rock[1] < max(barn[1], lake[1])
         ) || (
-            barn.second == lake.second && barn.second == rock.second &&
-            rock.first > min(barn.first, lake.first) && rock.first < max(barn.first, lake.first)
+            barn[1] == lake[1] && barn[1] == rock[1] && rock[0] > min(barn[0], lake[0]) &&
+            rock[0] < max(barn[0], lake[0])
         )
     ) {
         cows += 2;
