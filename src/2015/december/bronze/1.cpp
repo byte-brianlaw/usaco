@@ -2,7 +2,8 @@
 #include <fstream>
 
 using std::ifstream;
-using std::minmax;
+using std::max;
+using std::min;
 using std::ofstream;
 
 auto fin = ifstream("paint.in");
@@ -17,16 +18,7 @@ auto solve() {
 
     fin >> a >> b >> c >> d;
 
-    const auto bounds = minmax({a, b, c, d});
-    auto painted = 0;
-
-    for (auto i = bounds.first; i < bounds.second; ++i) {
-        if ((i >= a && i < b) || (i >= c && i < d)) {
-            ++painted;
-        }
-    }
-
-    fout << painted << '\n';
+    fout << b - a + d - c - max(min(b, d) - max(a, c), 0) << '\n';
 
 }
 
