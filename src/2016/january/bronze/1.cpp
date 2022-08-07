@@ -23,11 +23,14 @@ auto solve() {
         fin >> before[i] >> after[i];
     }
 
-    const auto gold_to_platinum = after[2] - before[2];
-    const auto silver_to_gold = after[1] - before[1] + gold_to_platinum;
+    auto promotions = array<int, 3>({0, 0, after[2] - before[2]});
 
-    fout << after[0] - before[0] + silver_to_gold << '\n' << silver_to_gold << '\n' <<
-    gold_to_platinum << '\n';
+    promotions[1] = after[1] - before[1] + promotions[2];
+    promotions[0] = after[0] - before[0] + promotions[1];
+
+    for (auto x : promotions) {
+        fout << x << '\n';
+    }
 
 }
 
