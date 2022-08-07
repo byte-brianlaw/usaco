@@ -16,27 +16,38 @@ auto solve() {
 
     auto cow_feed = Billboard();
     auto lawnmower = Billboard();
+    const auto inputBillboard = [&](Billboard& billboard) {
+        fin >> billboard[0][0] >> billboard[0][1] >> billboard[1][0] >> billboard[1][1];
+    };
 
-    fin >> lawnmower[0][0] >> lawnmower[0][1] >> lawnmower[1][0] >> lawnmower[1][1] >>
-    cow_feed[0][0] >> cow_feed[0][1] >> cow_feed[1][0] >> cow_feed[1][1];
+    inputBillboard(cow_feed);
+    inputBillboard(lawnmower);
 
-    auto tarp = (lawnmower[1][0] - lawnmower[0][0]) * (lawnmower[1][1] - lawnmower[0][1]);
+    auto covered = 0;
+    const auto checkCovered = [&](int x, int y) {
+        if (
+            x >= lawnmower[0][0] && x <= lawnmower[1][0] && y >= lawnmower[0][1] &&
+            y <= lawnmower[1][1]
+        ) {
+            ++covered;
+        }
+    };
 
-    if (
-        cow_feed[0][0] <= lawnmower[0][0] && cow_feed[1][0] >= lawnmower[1][0] &&
-        (cow_feed[0][1] <= lawnmower[0][1] || cow_feed[1][1] >= lawnmower[1][1])
-    ) {
+    checkCovered(cow_feed[0][0], cow_feed[0][1]);
+    checkCovered(cow_feed[0][0], cow_feed[1][1]);
+    checkCovered(cow_feed[1][0], cow_feed[0][1]);
+    checkCovered(cow_feed[1][0], cow_feed[1][1]);
+
+    auto tarp = 0;
+
+    if (covered < 4) {
+        tarp = (cow_feed[1][0] - cow_feed[0][0]) * (cow_feed[1][1] - cow_feed[0][1]);
+    }
+
+    if (covered == 2) {
         tarp -= (
-            max(min(cow_feed[1][1], lawnmower[1][1]) - max(cow_feed[0][1], lawnmower[0][1]), 0) *
-            (lawnmower[1][0] - lawnmower[0][0])
-        );
-    } else if (
-        cow_feed[0][1] <= lawnmower[0][1] && cow_feed[1][1] >= lawnmower[1][1] &&
-        (cow_feed[0][0] <= lawnmower[0][0] || cow_feed[1][0] >= lawnmower[1][0])
-    ) {
-        tarp -= (
-            max(min(cow_feed[1][0], lawnmower[1][0]) - max(cow_feed[0][0], lawnmower[0][0]), 0) *
-            (lawnmower[1][1] - lawnmower[0][1])
+            (min(cow_feed[1][0], lawnmower[1][0]) - max(cow_feed[0][0], lawnmower[0][0])) *
+            (min(cow_feed[1][1], lawnmower[1][1]) - max(cow_feed[0][1], lawnmower[0][1]))
         );
     }
 
