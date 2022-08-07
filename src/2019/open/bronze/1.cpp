@@ -37,15 +37,13 @@ auto solve() {
     }
 
     auto cows = abs(lake[0] - barn[0]) + abs(lake[1] - barn[1]) - 1;
+    const auto isBetween = [](int number, int bound_1, int bound_2) {
+        return number > min(bound_1, bound_2) && number < max(bound_1, bound_2);
+    };
 
     if (
-        (
-            barn[0] == lake[0] && barn[0] == rock[0] && rock[1] > min(barn[1], lake[1]) &&
-            rock[1] < max(barn[1], lake[1])
-        ) || (
-            barn[1] == lake[1] && barn[1] == rock[1] && rock[0] > min(barn[0], lake[0]) &&
-            rock[0] < max(barn[0], lake[0])
-        )
+        (barn[0] == lake[0] && barn[0] == rock[0] && isBetween(rock[1], barn[1], lake[1])) ||
+        (barn[1] == lake[1] && barn[1] == rock[1] && isBetween(rock[0], barn[0], lake[0]))
     ) {
         cows += 2;
     }
