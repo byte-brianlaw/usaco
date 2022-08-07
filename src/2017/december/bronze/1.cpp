@@ -25,20 +25,17 @@ auto solve() {
     inputItem(billboard_2);
     inputItem(truck);
 
-    const auto calculateArea = [](Item& item) {
-        return (item[1][0] - item[0][0]) * (item[1][1] - item[0][1]);
-    };
-    const auto calculateIntersection = [](Item& item_1, Item& item_2) {
+    const auto calculateVisible = [&](const Item& billboard) {
         return (
-            max(min(item_1[1][0], item_2[1][0]) - max(item_1[0][0], item_2[0][0]), 0) *
-            max(min(item_1[1][1], item_2[1][1]) - max(item_1[0][1], item_2[0][1]), 0)
+            ((billboard[1][0] - billboard[0][0]) * (billboard[1][1] - billboard[0][1])) -
+            (
+                max(min(billboard[1][0], truck[1][0]) - max(billboard[0][0], truck[0][0]), 0) *
+                max(min(billboard[1][1], truck[1][1]) - max(billboard[0][1], truck[0][1]), 0)
+            )
         );
     };
 
-    fout << (
-        calculateArea(billboard_1) + calculateArea(billboard_2) -
-        calculateIntersection(billboard_1, truck) - calculateIntersection(billboard_2, truck)
-    ) << '\n';
+    fout << calculateVisible(billboard_1) + calculateVisible(billboard_2) << '\n';
 
 }
 
