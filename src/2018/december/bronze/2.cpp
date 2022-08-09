@@ -1,11 +1,14 @@
 #include <algorithm>
+#include <array>
 #include <fstream>
-#include <map>
+#include <vector>
 
+using std::array;
 using std::ifstream;
-using std::map;
 using std::max;
 using std::ofstream;
+using std::sort;
+using std::vector;
 
 auto fin = ifstream("blist.in");
 auto fout = ofstream("blist.out");
@@ -16,22 +19,22 @@ auto solve() {
 
     fin >> n;
 
-    auto times = map<int, int>();
+    auto times = vector<array<int, 2>>(n * 2);
 
     for (auto i = 0; i < n; ++i) {
         auto buckets = 0;
-        auto end = 0;
-        auto start = 0;
-        fin >> start >> end >> buckets;
-        times[start] = buckets;
-        times[end] = -buckets;
+        fin >> times[i * 2][0] >> times[i * 2 + 1][0] >> buckets;
+        times[i * 2][1] = buckets;
+        times[i * 2 + 1][1] = -buckets;
     }
+
+    sort(times.begin(), times.end());
 
     auto buckets = 0;
     auto current = 0;
 
     for (const auto& x : times) {
-        current += x.second;
+        current += x[1];
         buckets = max(current, buckets);
     }
 
