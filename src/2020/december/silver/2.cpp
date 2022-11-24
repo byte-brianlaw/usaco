@@ -65,9 +65,7 @@ auto solve() {
                 );
             };
             const auto [left, right] = minmax(x[0], cows[i][0]);
-            subsets += (
-                static_cast<long long>(query(0, x[1], left, i)) * query(right, x[1], n - 1, i)
-            );
+            subsets += query(0, x[1], left, i) * query(right, x[1], n - 1, i);
         }
     }
 
