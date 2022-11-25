@@ -30,26 +30,25 @@ auto solve() {
         fin >> x;
     }
 
-    sort(c.begin(), c.end(), greater<int>());
-
     auto stores = vector<Store>(m);
 
     for (auto& x : stores) {
         fin >> x[0] >> x[1];
     }
 
+    auto neighbors = vector<int>(r);
+
+    for (auto& x : neighbors) {
+        fin >> x;
+    }
+
+    sort(c.begin(), c.end(), greater<int>());
     sort(
         stores.begin(), stores.end(),
         [](const Store& store_1, const Store& store_2) {
             return store_1[1] > store_2[1];
         }
     );
-
-    auto neighbors = vector<int>(r);
-
-    for (auto& x : neighbors) {
-        fin >> x;
-    }
 
     auto potential = vector<long long>(n);
     auto reached = 0;
